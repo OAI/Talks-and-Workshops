@@ -1,0 +1,169 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Answers: GET Operation
+    
+    This OpenAPI 2.0 document has `/taxpayers` and `/taxpayers/{id}`
+    path items, each with an OPTIONS operation. In this exercise, 
+    we'll create GET operations and specify responses on these resources. 
+    
+    1. On the `/taxpayers` path item, add a GET operation as follows:
+        * Description is "Retrieve the entire list of taxpayers."
+        * Specify an individual HTTP 200 (OK) response.
+        * Response description should be "OK"
+        * The schema for the response should be: <br/>
+          `$ref: "#/definitions/Taxpayers"` (plural)<br/><br/>
+
+    2. On the `/taxpayers` GET method you added in step 1, add a response
+       for HTTP 400 (Bad Request) with the schema 
+       `"#/definitions/ErrorResponse"`, and description "The request 
+       may have included an unrecognized or unsupported parameter."
+       
+    3. On the `/taxpayers` GET method, add a default response
+       for all unspecified responses from the server with the schema
+       `"#/definitions/ErrorResponse"`, and description "Unexpected
+       error in processing the request."
+       
+    4. On the `/taxpayers/{id}` path item, add a GET operation:
+        * Description is "Retrieve an individual taxpayer."
+        * Specify an individual HTTP 200 (OK) response.
+        * Response description should be "OK"
+        * The schema for the response should be: <br/>
+          `$ref: "#/definitions/Taxpayer"` (singular)<br/><br/>
+
+    5. On the `/taxpayers/{id}` GET method you added in step 4, 
+       add a response for HTTP 404 (Not Found) with the schema 
+       `"#/definitions/ErrorResponse"`, and description "A taxpayer
+       with the specified ID could not be found."
+       
+    6. On the `/taxpayers/{id}` GET method, add a default response
+       similar to step 3.      
+
+paths:
+
+  /taxpayers:
+    options:
+      description: Request information about methods available
+      responses:
+        '200':
+          description: OK
+    get:
+      description: Retrieve the entire list of taxpayers.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayers"
+        '400':
+          description: > 
+            The request may have included an unrecognized or 
+            unsupported parameter.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /taxpayers/{id}:
+    parameters:
+    - description: ID of the individual taxpayer.
+      name: id
+      required: true
+      in: path
+      schema:
+        type: string
+      
+    options:
+      description: Request information about methods available
+      responses:
+        '200':
+          description: OK
+    get:
+      description: Retrieve an individual taxpayer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayer"
+        400:
+          description: >
+            A taxpayer with the specified ID could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+
+  schemas:
+
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+  
+    Taxpayer:
+      type: object
+      required:
+      - taxpayerID
+      properties:
+        taxpayerID:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        maritalStatus:
+          type: boolean
+          
+    Taxpayers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Taxpayer"
+        
+    ErrorResponse:
+      description: An error string returned from a bad response.
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        stackTrace:
+          type: string

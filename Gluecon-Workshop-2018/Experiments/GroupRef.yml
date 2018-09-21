@@ -1,0 +1,68 @@
+paths:
+  /foo:
+    get: 
+      parameters:
+       - name: top
+         in: query
+         type: int
+       - name: top
+         in: path
+       - $groupRef: #/components/parameters/commonParameters 
+      responses:
+        200: 
+          headers: 
+            $groupRef : #/components/headers/ratelimitingheaders
+    $groupRef: #/components/operations/commonOperations
+components:
+  operations:
+    commonOperations: #group of operations
+      head:
+        #inline operation object
+      options:
+        #inline operation object
+      trace:
+        #inline operation object
+    commonOptionOp:
+      option:
+        parameters:
+        responses:
+          200:
+            description:
+  headers:
+    ratelimitingheaders:
+      x-rate-limit:
+      x-rate-...:
+
+  parameters:
+    commonParameters:
+      skip:
+      top:
+      limit:
+
+
+========================
+meta-schema
+========================
+
+definitions:
+  components:
+    # stuff that's already defined, plus...
+    properties:
+      operations:
+        type: object
+        patternProperties:
+          # pattern for name of a reusable op
+          type: 
+            oneOf:
+              - $ref: "#/definitions/optionsOperation"
+              - $ref: "#/definitions/getOperation"
+              - $ref: "#/definitions/putOperation"
+              - $ref: ...
+
+ optionsOperation:
+  properties:
+    options:
+      type: object
+      properties:
+
+        # properties that are appropriate for an options op.

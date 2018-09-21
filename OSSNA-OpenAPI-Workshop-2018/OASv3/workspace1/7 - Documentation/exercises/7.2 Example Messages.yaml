@@ -1,0 +1,11 @@
+---
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: My API Spec
+paths:
+  /resourceUrl:
+    get:
+      responses:
+        200:
+          description: Success

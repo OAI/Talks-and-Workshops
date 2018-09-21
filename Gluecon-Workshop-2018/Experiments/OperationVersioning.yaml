@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Example of operation versioning
+  version: 1.0.313
+paths:
+  /foo:
+    get:
+      operationId : getFoo
+      description : Return a foo
+      deprecated: true
+      deprecatedVersion: 1.0.312
+      replacementOperationId: getFoo2
+      responses: 
+        '200': 
+          description: A foo representation
+  /foo2: 
+    get: 
+      operationId: getFoo2
+      description: Return a foo
+      responses: 
+        '200': 
+          description: A completely different breaking foo representation   

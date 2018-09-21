@@ -1,0 +1,169 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: Header Parameters
+    
+    In this exercise, we'll use header parameters to add some useful
+    qualifiers to the `/taxpayers/{id}` and `/tax_filings/{id}` 
+    GET requests.
+
+    1. On the `/taxpayers/{id}` GET request, add an optional 'Referer'
+       header parameter to specify the referring URL.
+       
+    2. On the `/tax_filings/{id}` GET request, add the 
+       'If-Modified-Since' header
+       [described here](https://tools.ietf.org/html/rfc7232#section-3.3). 
+       <br/>
+       **Note:** Since the HTTP-date format is complex, it's OK to 
+       make this a plain string value.
+
+paths:
+
+  /taxpayers:
+    get:
+      description: Retrieve the entire list of taxpayers.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayers"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /taxpayers/{id}:
+    parameters:
+    - description: ID of the individual taxpayer.
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      description: Retrieve an individual taxpayer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayer"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tax_filings:
+    get:
+      description: Retrieve all available tax filings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFilings"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /tax_filings/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: ID of the Tax Filing
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve an individual tax filing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFiling"
+
+components:
+  schemas:
+  
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+        filingStatus:
+          $ref: "#/components/schemas/TaxFilingStatus"
+          
+    TaxFilingStatus:
+      type: string
+      enum:
+      - Draft
+      - Submitted
+      - Accepted
+      - Audit_Pending
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+  
+    Taxpayer:
+      type: object
+      required:
+      - taxpayerID
+      properties:
+        taxpayerID:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        maritalStatus:
+          type: boolean
+        taxDue:
+          type: number
+  
+    Taxpayers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Taxpayer"
+        
+    ErrorResponse:
+      description: An error string returned from a bad response.
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        stackTrace:
+          type: string
+  

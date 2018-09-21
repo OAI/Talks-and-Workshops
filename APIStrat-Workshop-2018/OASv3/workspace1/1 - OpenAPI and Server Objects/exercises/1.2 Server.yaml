@@ -1,0 +1,21 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: Server Information
+    
+    This OpenAPI 2.0 specification does not include a physical address for 
+    the API. Please specify the following information,using the `servers`
+    property.
+    
+    1. The host is `api.taxblaster.com`
+    2. The base path is `/TaxFilingDataAPI/v2`
+    3. The API supports `http` and `https` protocols.
+       
+
+# The paths property is required. In this case, there are no paths defined,
+# so we use empty object syntax: {}
+paths: {}

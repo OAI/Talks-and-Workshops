@@ -1,0 +1,192 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: PUT Operation
+    
+    In this example, we'll use a PUT method on the individual 
+    `/taxpayers/{id}` path item to add a new taxpayer. This is
+    appropriate if the client knows the taxpayer ID, and therefore
+    knows the URL where the taxpayer should be stored. A PUT will
+    normally replace the previously stored state, if any.
+    
+    In this scenario, the `taxpayerID` property is assigned by the 
+    client, so it's read-write, not `readOnly`.
+    
+    1. In the `/taxpayers/{id}` path item, add a new PUT operation, with
+       a description indicating that it's creating a new Taxpayer object.
+       The request body should be a reference to the existing `Taxpayer`
+       schema object in `components/schemas`.
+       
+    2. Set the successful response to use HTTP response code 200.
+       The response should includea representation of the created 
+       taxpayer object.
+
+paths:
+
+  /taxpayers:
+    get:
+      description: Retrieve the entire list of taxpayers.
+      parameters:
+      - name: minTaxDue
+        in: query
+        schema:
+          type: number
+        description: >
+          Return only taxpayers with taxDue >= the specified value.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayers"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /taxpayers/{id}:
+    parameters:
+    - description: ID of the individual taxpayer.
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      description: Retrieve an individual taxpayer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayer"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tax_filings:
+    get:
+      description: Retrieve all available tax filings
+      parameters:
+      - name: status
+        in: query
+        description: > 
+          Return only tax filings with the specified tax filing status.
+        required: true
+        schema:
+          type: string
+          enum:
+          - Draft
+          - Submitted
+          - Accepted
+          - Audit_Pending        
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFilings"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /tax_filings/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: ID of the Tax Filing
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve an individual tax filing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFiling"
+
+components:
+  schemas:
+
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+        filingStatus:
+          $ref: "#/components/schemas/TaxFilingStatus"
+          
+    TaxFilingStatus:
+      type: string
+      enum:
+      - Draft
+      - Submitted
+      - Accepted
+      - Audit_Pending
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+  
+    Taxpayer:
+      type: object
+      required:
+      - taxpayerID
+      properties:
+        taxpayerID:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        maritalStatus:
+          type: boolean
+        taxDue:
+          type: number
+  
+    Taxpayers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Taxpayer"
+        
+    ErrorResponse:
+      description: An error string returned from a bad response.
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        stackTrace:
+          type: string

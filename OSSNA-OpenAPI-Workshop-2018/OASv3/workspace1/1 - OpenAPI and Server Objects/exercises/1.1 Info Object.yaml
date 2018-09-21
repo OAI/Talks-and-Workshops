@@ -1,0 +1,22 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  
+  description: |
+    # Exercise: Info Object
+    
+    This OpenAPI 2.0 specification has only minimal metadata.
+    Please populate additional metadata as follows: 
+    
+    1. Add a `contact` object property, with `name` and `email` properties.
+    2. Specify a `license` with the `name` "GNU General Public License (GPL 2.0)", 
+       and URL http://www.gnu.org/licenses/gpl-2.0.html
+    3. Add a `termsOfService` property with the URL:
+       http://franklloydwrong.com/api/terms    
+
+# The paths property is required. In this case, there are no paths defined,
+# so we use empty object syntax: {}
+paths: {}

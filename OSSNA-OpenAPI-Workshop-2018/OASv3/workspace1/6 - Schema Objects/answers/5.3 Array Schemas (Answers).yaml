@@ -1,0 +1,250 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: Nested Schemas
+    
+    Did you notice something a little off in the last example? 
+    That's right, a tax filing could have more than one associated
+    payment record. So we'll fix that in the `TaxFiling` schema.
+    
+    We want our TaxFiling instance to look like this: 
+       
+    ```
+    {
+      "filingID" : "ASDF1234",
+      "taxpayerID" : "987-89-2345",
+      "jurisdiction" : "Internal Revenue Service",
+      "fileDate" : "2017-04-10",
+      "isJointFiling" : false,
+      "filingStatus" : "submitted",
+      "payment" : [
+        {
+          "paymentID": "P198723",
+          "date": "2018-04-10",
+          "amount": 1500.00,
+          "currency": "USD"
+        },
+        {
+          "paymentID": "P12347",
+          "date": "2018-06-30",
+          "amount": 2231.89,
+          "currency": "USD"
+        }
+      ]
+    }
+    ```
+    
+    1. In the `TaxFiling` component schema, change the `payment`
+       property to `payments`, plural.
+      
+    2. Change the `payments` schema from a single-valued reference to
+       an array of references to `TaxPayment`.  
+         
+       **HINT**: Remember, arrays use the `items` subschema to specify
+       the schema for the elements of the array.
+
+paths:
+
+  /tax_payment/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: Payment ID
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve a single tax payment.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxPayment"
+
+  /taxpayers:
+    get:
+      description: Retrieve the entire list of taxpayers.
+      parameters:
+      - name: minTaxDue
+        in: query
+        schema:
+          type: number
+        description: >
+          Return only taxpayers with taxDue >= the specified value.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayers"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /taxpayers/{id}:
+    parameters:
+    - description: ID of the individual taxpayer.
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      description: Retrieve an individual taxpayer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayer"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tax_filings:
+    get:
+      description: Retrieve all available tax filings
+      parameters:
+      - name: status
+        in: query
+        description: > 
+          Return only tax filings with the specified tax filing status.
+        required: true
+        schema:
+          type: string
+          enum:
+          - Draft
+          - Submitted
+          - Accepted
+          - Audit_Pending        
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFilings"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /tax_filings/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: ID of the Tax Filing
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve an individual tax filing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFiling"
+
+components:
+  schemas:
+
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+        filingStatus:
+          $ref: "#/components/schemas/TaxFilingStatus"
+        payments:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaxPayment"
+          
+    TaxFilingStatus:
+      type: string
+      enum:
+      - Draft
+      - Submitted
+      - Accepted
+      - Audit_Pending
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+  
+    Taxpayer:
+      type: object
+      required:
+      - taxpayerID
+      properties:
+        taxpayerID:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        maritalStatus:
+          type: boolean
+        taxDue:
+          type: number
+  
+    Taxpayers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Taxpayer"
+        
+    TaxPayment:
+      type: object
+      properties:
+        paymentID:
+          type: string
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+        currency:
+          type: string
+    
+        
+    ErrorResponse:
+      description: An error string returned from a bad response.
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        stackTrace:
+          type: string

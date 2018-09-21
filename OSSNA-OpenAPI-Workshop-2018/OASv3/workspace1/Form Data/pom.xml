@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.modelsolv.reprezen.generators</groupId>
+    <artifactId>form-data</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Form Data</name>
+    <packaging>pom</packaging>
+    <properties>
+        <reprezen.version>[1.6.9.9370,2.0)</reprezen.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <shared.gentemplates.dir>C:\Users\Ted\workspacerzen\OSSNA-OpenAPI-Workshop\OASv3\workspace1/shared/GenTemplates</shared.gentemplates.dir>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.modelsolv.reprezen</groupId>
+            <artifactId>com.modelsolv.reprezen.generators.api</artifactId>
+            <version>${reprezen.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.modelsolv.reprezen</groupId>
+            <artifactId>com.modelsolv.reprezen.generators.xtend</artifactId>
+            <version>${reprezen.version}</version>
+        </dependency>
+
+        <!--  Provided generators -->
+        <dependency>
+            <groupId>com.modelsolv.reprezen</groupId>
+            <artifactId>com.modelsolv.reprezen.generators.standard</artifactId>
+            <version>${reprezen.version}</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+		<repository>
+			<id>reprezen-repo-preview</id>
+			<url>http://maven.reprezen.com/repository/preview</url>
+			<layout>default</layout>
+		</repository>
+    </repositories>
+</project>

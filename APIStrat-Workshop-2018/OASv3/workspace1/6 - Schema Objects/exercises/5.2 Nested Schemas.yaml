@@ -1,0 +1,239 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: Nested Schemas
+    
+    Building on the previous exercise, we'll extract the new 
+    object schema from `/taxpayment/{id}` to a reusable component
+    schema. Then we'll reference it in a new `payment` property in 
+    the `TaxFiling` schema.
+    
+    The result will be that TaxFiling has a nested structure -- an 
+    that contains another object as one of its property values. 
+    A TaxFiling instance with this new structure might look like this:
+    
+    ```
+    {
+      "filingID" : "ASDF1234",
+      "taxpayerID" : "987-89-2345",
+      "jurisdiction" : "Internal Revenue Service",
+      "fileDate" : "2017-04-10",
+      "isJointFiling" : false,
+      "filingStatus" : "submitted",
+      "payment" : {
+        "paymentID": "P12347",
+        "date": "2018-04-10",
+        "amount": 2231.89,
+        "currency": "USD"
+      }
+    }
+    ```
+    
+    1. Copy the object schema from the `/taxpayment/{id}` GET response
+       to a new `TaxPayment` reusable schema in `/components/schemas`.
+       
+    2. Replace the object schema from the `/taxpayment/{id}` GET response
+       with a reference to the new `TaxPayment` reusable schema.  
+       **HINT:** Code assist is helpful to insert `$ref` values.
+    
+    3. Add a `payment` property definition to the `TaxFiling` object
+       schema, as a reference to the same `TaxPayment` schema you 
+       referenced directly in the previous step. 
+
+paths:
+
+  /tax_payment/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: Payment ID
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve a single tax payment.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentID:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  amount:
+                    type: number
+                  currency:
+                    type: string
+
+  /taxpayers:
+    get:
+      description: Retrieve the entire list of taxpayers.
+      parameters:
+      - name: minTaxDue
+        in: query
+        schema:
+          type: number
+        description: >
+          Return only taxpayers with taxDue >= the specified value.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayers"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /taxpayers/{id}:
+    parameters:
+    - description: ID of the individual taxpayer.
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      description: Retrieve an individual taxpayer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Taxpayer"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tax_filings:
+    get:
+      description: Retrieve all available tax filings
+      parameters:
+      - name: status
+        in: query
+        description: > 
+          Return only tax filings with the specified tax filing status.
+        required: true
+        schema:
+          type: string
+          enum:
+          - Draft
+          - Submitted
+          - Accepted
+          - Audit_Pending        
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFilings"
+        default:
+          description: >
+            Unexpected error in processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /tax_filings/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: ID of the Tax Filing
+      required: true
+      schema:
+        type: string
+    get:
+      description: Retrieve an individual tax filing
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxFiling"
+
+components:
+  schemas:
+
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+        filingStatus:
+          $ref: "#/components/schemas/TaxFilingStatus"
+          
+    TaxFilingStatus:
+      type: string
+      enum:
+      - Draft
+      - Submitted
+      - Accepted
+      - Audit_Pending
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+  
+    Taxpayer:
+      type: object
+      required:
+      - taxpayerID
+      properties:
+        taxpayerID:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        maritalStatus:
+          type: boolean
+        taxDue:
+          type: number
+  
+    Taxpayers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Taxpayer"
+        
+    ErrorResponse:
+      description: An error string returned from a bad response.
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        stackTrace:
+          type: string

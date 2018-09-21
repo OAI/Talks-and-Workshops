@@ -1,0 +1,66 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: TaxBlaster API
+  description: |
+    # Exercise: Path Items
+    
+    This OpenAPI 2.0 document has a single `/diagnostics` path item.
+    Please use code assist templates to create the following path items: 
+    
+    1. Create a path item as follows:
+        * path: `/TaxFilings`
+        * GET method, with a response 200 schema in JSON format:  
+          reference to the reusable `TaxFilings` schema <br/><br/>
+
+    2. Create a path item as follows:
+        * path: `/TaxFilings/{id}`
+        * GET method, with a response 200 schema in JSON format:  
+          reference to the reusable `TaxFiling` schema <br/><br/>
+         
+    3. Add a path parameter to `/TaxFilings/{id}`
+        * name must be "id"
+        * located in the path
+        * applicable to all methods defined in this resource.
+
+paths:
+
+  /diagnostics:
+    get:
+      description: get diagnostic information about the TaxBlaster service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+
+components:
+
+  schemas:
+
+    TaxFiling:
+      type: object
+      required:
+        - filingID  
+      properties:
+        filingID:
+          type: string
+        taxpayerID:
+          type: string
+        jurisdiction:
+          type: string
+        fileDate:
+          type: string
+          format: date
+        isJointFiling:
+          type: boolean
+          
+    TaxFilings:
+      type: array
+      items:
+        $ref: "#/components/schemas/TaxFiling"
+                

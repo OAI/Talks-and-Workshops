@@ -1,0 +1,52 @@
+# OpenAPI v3 Training Exercise
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: My API Spec
+  description: |
+    # Exercise - Markdown
+    
+    OpenAPI 3.0 uses the CommonMark specification for 
+    `description` properties, and other properties that allow
+    markdown formatting. 
+    
+    Reformat this description by translating the embedded
+    instructions into the corresponding CommonMark syntax:
+    
+      (Heading 1) Introducing RoboPet
+      
+      Have you ever wished your pet would have robot-like
+      qualities? 
+
+    Customer API used at [Bigco](http://www.bigco.com).
+  
+    Lines that are
+    _consecutive_ (you can use underscores or single asterisks for italics) will be treated as a single 
+    **paragraph**.
+    sdfsdf
+    
+    Two consecutive line breaks will create a new paragraph.
+    
+    ## Second-level heading
+    
+    ### Third-level heading
+    changing something..
+    
+    This is a list of vegetables:
+
+    1. Tomato
+    2. Tom-ah-to
+    3. Potato
+        * French Fries
+        * Baked potatoes
+        * Mashed potatoes
+            * with gravy
+            * without gravy
+  
+paths:
+  /resourceUrl:
+    get:
+      responses:
+        200:
+          description: Success

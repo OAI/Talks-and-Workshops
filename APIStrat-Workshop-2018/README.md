@@ -1,6 +1,6 @@
 # OpenAPI Workshop Content
 
-This project has content for the following OpenAPI Workshop at the 2018 Open Source Summit North America. 
+This project has content for the following OpenAPI Workshop at the 2018 APIStrat. 
 
 Source files are in OpenAPI 3.0 format.
 
@@ -8,7 +8,7 @@ Workshop attendees will want to download or clone the repository to a writable f
 
 ## OpenAPI Editing Tools
 
-There are many commercial and open source editors for OpenAPI. In this workshop, we recommend that you work with one or more of the following tools
+There are many commercial and open source editors for OpenAPI. In this workshop, we recommend that you work with one or more of the following tools.
 
 ### RepreZen API Studio (Eclipse-based):
 * http://rzen.io/preview

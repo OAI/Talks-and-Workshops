@@ -1,5 +1,0 @@
-.metadata/*
-*/gentargets/*/*/*.log
-*/gentargets/*/*/*.trace.json
-*/.metadata
-/.metadata/

@@ -1,0 +1,34 @@
+Engaging Implementors to Adopt OAS
+
+Ted:
+Remove barriers to extend the language
+
+We think the new process (proposals) will help
+Also the registry
+
+Actions:
+- Post about the new proposal process
+- Starter page on OAS
+	- For users
+	- Also a page geared to tooling providers
+- Compliance - Steve: When 3.1 comes out, budget to advertise the tools that reasonably comply with the spec by date X - Neal: what other LF projects have done - start with low bar? Hire outsider to 
+“Judge”
+- Process to get feedback with toolmakers to ensure features are the ones that get used
+
+Steve:
+A draft feature does not go into the spec until it has say 2 implementations
+
+Darrel:
+Ensure we are getting feedback from tooling vendors, if an upcoming feature is something they see demand for - vetting
+
+Steve:
+We should not shy away from compliance, validation, certification 
+
+Steve:
+Certification Must Be automated
+
+Darrel/Tina:
+More consistent compliance will ultimately drive greater adoption
+
+Jonathan:
+Has internal TCK that does that for RAML

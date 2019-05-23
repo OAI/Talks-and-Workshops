@@ -1,0 +1,26 @@
+Registry for Extensions - most voted topic
+
+Darrel:
+This already exists:
+Spec.openapis.org/registry
+Can do a PR
+
+
+Use cases as observed by Emmanuel:
+- To start up a proposal: `x-oas-draft-xxx`
+- To find what others did, what exists right now, as documentation
+	- I.e OAI does not “govern” extensions
+
+Action items:
+Darrel: Add Registry to website
+Ron/Ted: process to update the registry
+Who? Proposed by Steve: Call out to vendors to fill in registry
+
+Draft process as outlined by Ted
+3 stage:
+1. Vendor - x-vendor-xxx - it’s a list for vendors to add their stuff, encourage them
+Steve: ask vendors to add their extensions
+3. Commons - collaborative evolution , self-government - e.g. x-rate-limit - encourage community to collaborate
+4. Draft as part of OAI process, as part of proposal process: x-oas-draft-xxx
+
+Move through stages downward

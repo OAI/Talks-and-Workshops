@@ -1,0 +1,31 @@
+Query Protocols as a Language feature
+
+Positioning wrt GraphQL, OData, JSON API
+- GraphQL over OpenAPI
+
+Darrel:
+* Why - to avoid writing resolvers for GraphQL
+* Wants complementary spec: Query Plan Spec
+* So, given an OpenAPI Schema with links that describe relationships, I can use GraphQL to query HTTP services
+
+[Ask Darrel for his slide, notes]
+
+Useful for:
+a. Implementing queries over existing services, regardless of whether they use GraphQL
+b. A language for doing composition vs arbitrary code
+
+Ted
+Bothered by duality of choice - do I create a REST API or GraphQL API
+How do I define my query protocol in OpenAPI - no good answer
+Looking for a way to describe a query in a clean way, not worried about the how. Wants to extend OpenAPI.
+
+Steve:
+Should have an answer for “how do I do a query API”?
+
+Tina: Difficult to build the ecosystem that GraphQL has so likes Darrel’s approach to reuse what’s available.
+
+Action:
+Needs further discussion in OpenAPI
+- Should this be part of the spec?
+- Should it be an extension language?
+- Should OpenAPI express queries in GraphQL?

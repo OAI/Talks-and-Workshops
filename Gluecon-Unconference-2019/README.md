@@ -14,4 +14,10 @@ Various topics were proposed and voted on, here are the top 3 we discussed:
 
 ## Topics Proposed but Not Discussed
 
-List TBD
+1. Additional API Semantics
+2. Scenarios (requests causing responses)
+3. Rethinking Security Definitions
+4. Keeping things concise and dry - "traits"
+5. State of Overlays
+6. Abstracted AST
+7. Runtime config language for policies and gateways
